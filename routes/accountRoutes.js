@@ -25,11 +25,11 @@ router.post("/profile/image", upload.single("profile_image"), uploadProfileImage
 
 
 // invoices & payments
-router.get("/invoices", getInvoices);
-router.get("/payments", getPayments);
+router.get("/get-invoices", getInvoices);
+router.get("/get-payments", getPayments);
 
 // subscription
-router.get("/subscription", getSubscription);
+router.get("/get-subscription", getSubscription);
 router.get("/access-status", getAccessStatus);
 router.post("/subscription/renew", renewSubscription);
 router.post("/subscription/cancel", cancelSubscription);

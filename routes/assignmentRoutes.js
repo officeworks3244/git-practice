@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 // POST => Assign exterminator to customer/location
-router.post("/assign", assignToExterminator);
+router.post("/assign-to-exterminator", assignToExterminator);
 
 // GET => Get all assignments for a user
 router.get("/user/:user_id", getUserAssignments);
