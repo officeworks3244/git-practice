@@ -1,0 +1,208 @@
+{
+  "info": {
+    "name": "PestIQ - Photo Credits & Billing API",
+    "description": "Test invoice and photo credit endpoints",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Invoices",
+      "item": [
+        {
+          "name": "Get All Invoices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/invoices?page=1&limit=20&status=paid",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "invoices"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "paid"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5000/api/invoices?page=1&limit=20",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "5000",
+                  "path": ["api", "invoices"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"company_id\": 10,\n      \"invoice_number\": \"INV-1705948800000-5723\",\n      \"amount\": 99.99,\n      \"currency\": \"USD\",\n      \"status\": \"paid\",\n      \"type\": \"subscription\",\n      \"description\": \"1000 Photos Pack Renewal\",\n      \"meta\": \"{\\\"stripe_payment_intent\\\":\\\"pi_1234567890\\\",\\\"stripe_session_id\\\":\\\"cs_test_xyz\\\"}\",\n      \"created_at\": \"2024-01-22T10:30:00Z\",\n      \"updated_at\": \"2024-01-22T10:35:00Z\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 1,\n    \"limit\": 20,\n    \"total\": 5,\n    \"pages\": 1\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Single Invoice",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/invoices/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "invoices", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Subscription Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/invoices/status/subscription",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "invoices", "status", "subscription"]
+            }
+          },
+          "response": [
+            {
+              "name": "Active Subscription",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"status\": \"active\",\n    \"expiresAt\": \"2024-02-22T10:30:00Z\",\n    \"daysLeft\": 31,\n    \"isExpired\": false,\n    \"plan\": \"1000_photos\",\n    \"photosLimit\": 1000,\n    \"photosUsed\": 745,\n    \"photosRemaining\": 255,\n    \"percentageUsed\": 74.5\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Revenue Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/invoices/summary/revenue",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "invoices", "summary", "revenue"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Photo Upload with Credit Check",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/photos/upload",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "photos", "upload"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success - Photo Uploaded",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"message\": \"Photo uploaded successfully\",\n  \"data\": {\n    \"photoId\": 123,\n    \"photoPath\": \"uploads/photos/photo_1705948800.jpg\",\n    \"creditsRemaining\": 254\n  }\n}"
+        },
+        {
+          "name": "Error - No Photo Credits",
+          "status": "Forbidden",
+          "code": 403,
+          "body": "{\n  \"success\": false,\n  \"message\": \"You have used all your photo credits. Please upgrade your plan.\",\n  \"errorCode\": \"NO_PHOTO_CREDITS\",\n  \"data\": {\n    \"photosRemaining\": 0\n  }\n}"
+        },
+        {
+          "name": "Error - Subscription Expired",
+          "status": "Forbidden",
+          "code": 403,
+          "body": "{\n  \"success\": false,\n  \"message\": \"Your subscription has expired. Please renew your subscription to continue.\",\n  \"errorCode\": \"SUBSCRIPTION_EXPIRED\",\n  \"data\": {}\n}"
+        }
+      ]
+    },
+    {
+      "name": "Stripe Integration",
+      "item": [
+        {
+          "name": "Create Checkout Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"1000_photos\",\n  \"amount\": 99.99,\n  \"successUrl\": \"http://localhost:5173/success\",\n  \"cancelUrl\": \"http://localhost:5173/cancel\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/stripe/checkout-session",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "stripe", "checkout-session"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

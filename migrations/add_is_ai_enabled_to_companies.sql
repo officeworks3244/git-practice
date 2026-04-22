@@ -1,0 +1,3 @@
+ALTER TABLE companies
+ADD COLUMN is_ai_enabled TINYINT(1) NOT NULL DEFAULT 1
+AFTER name;
