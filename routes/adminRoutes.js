@@ -4,7 +4,7 @@ import { getAllCompanies, getCompanyOwnerDetail, getInvoicesByCompanyId, updateC
 const router = express.Router();
 
 // ✅ Admin → Get all companies with owners
-router.get("/companies", getAllCompanies);
+router.get("/get-all-companies", getAllCompanies);
 router.get(
     "/company/:companyId/owner",
     getCompanyOwnerDetail
