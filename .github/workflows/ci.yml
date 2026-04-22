@@ -1,0 +1,23 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - next
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup runtime
+        run: echo "Setup done"
+
+      - name: Build project
+        run: echo "Building project..."
+
+      - name: Run tests
+        run: echo "Tests running..."
